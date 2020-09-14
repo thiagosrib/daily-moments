@@ -1,5 +1,5 @@
 {
-  "appId": "org.example.dailymoments",
+  "appId": "br.com.example.dailymoments",
   "appName": "Daily Moments",
   "bundledWebRuntime": false,
   "npmClient": "npm",

@@ -1,4 +1,4 @@
-package org.example.dailymoments;
+package br.com.example.dailymoments;
 
 import android.os.Bundle;
 
