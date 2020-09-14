@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "start": "ionic serve",
+    "start:android": "ionic capacitor run android --livereload --external",
     "build": "ionic build"
   },
   "dependencies": {
     "@capacitor/android": "2.1.0",
     "@capacitor/core": "2.1.0",
+    "@capacitor/ios": "^2.1.0",
     "@ionic/react": "^5.0.7",
     "@ionic/react-router": "^5.3.1",
     "firebase": "^7.19.1",

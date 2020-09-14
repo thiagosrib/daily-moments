@@ -11,7 +11,7 @@ import {
   IonIcon,
   IonLabel,
   IonThumbnail,
-  IonImg
+  IonImg,
 } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 
@@ -24,12 +24,17 @@ import { formatDate } from '../date';
 
 const HomePage: React.FC = () => {
   const { userId } = useAuth();
-  const [ entries, setEntries ] = useState<Entry[]>([]);
+  const [entries, setEntries] = useState<Entry[]>([]);
 
   useEffect(() => {
-    const entriesRef = firestore.collection('users').doc(userId).collection('entries');
+    const entriesRef = firestore
+      .collection('users')
+      .doc(userId)
+      .collection('entries');
 
-    return entriesRef.orderBy('date', 'desc').limit(7)
+    return entriesRef
+      .orderBy('date', 'desc')
+      .limit(7)
       .onSnapshot(({ docs }) => setEntries(docs.map(toEntry)));
     // entriesRef.get().then(({ docs }) => setEntries(docs.map(toEntry)));
   }, [userId]);
@@ -38,12 +43,12 @@ const HomePage: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Home</IonTitle>
+          <IonTitle>Daily Moments</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className='ion-padding'>
         <IonList>
-          {entries.map((entry) => 
+          {entries.map((entry) => (
             <IonItem
               button
               key={entry.id}
@@ -57,12 +62,12 @@ const HomePage: React.FC = () => {
                 <h3>{entry.title}</h3>
               </IonLabel>
             </IonItem>
-          )}
+          ))}
         </IonList>
         {/* FAB -> Floating Action Button */}
         <IonFab vertical='bottom' horizontal='end'>
           <IonFabButton routerLink='/my/entries/add'>
-            <IonIcon icon={ addIcon } />
+            <IonIcon icon={addIcon} />
           </IonFabButton>
         </IonFab>
       </IonContent>

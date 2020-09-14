@@ -13,26 +13,25 @@ import {
   IonTextarea,
   IonButton,
   IonDatetime,
+  isPlatform
 } from '@ionic/react';
 import React, { useEffect, useRef, useState } from 'react';
+
+import { CameraResultType, CameraSource, Plugins } from '@capacitor/core';
 
 import { firestore, storage } from '../firebase';
 import { useAuth } from '../auth';
 import { useHistory } from 'react-router';
 
+const { Camera } = Plugins;
+
 async function savePicture(blobUrl, userId) {
-  console.log(blobUrl, userId);
   const pictureRef = storage.ref(`/users/${userId}/pictures/${Date.now()}`);
-  console.log(pictureRef);
   const response = await fetch(blobUrl);
-  console.log(response);
   const blob = await response.blob();
-  console.log(blob);
   const snapshot = await pictureRef.put(blob);
-  console.log(snapshot);
 
   const url = await snapshot.ref.getDownloadURL();
-  console.log('saved url', url)
 
   return url;
 }
@@ -50,7 +49,6 @@ const AddEntryPage: React.FC = () => {
   const [ pictureUrl, setPictureUrl ] = useState('/assets/placeholder.png');
 
   useEffect(() => () => {
-    console.log('revoke', pictureUrl);
     if (pictureUrl.startsWith('blob:')) {
       URL.revokeObjectURL(pictureUrl);
     }
@@ -62,7 +60,7 @@ const AddEntryPage: React.FC = () => {
     // const timestamp = firestore.Timestamp.fromDate(dateJS);
     const entryData = { date, title, pictureUrl, description };
 
-    if (pictureUrl.startsWith('blob:')) {
+    if (!pictureUrl.startsWith('/assets')) {
       entryData.pictureUrl = await savePicture(pictureUrl, userId);
     }
 
@@ -74,8 +72,26 @@ const AddEntryPage: React.FC = () => {
     if (event.target.files.length > 0) {
       const file = event.target.files.item(0);
       const pictureUrl = URL.createObjectURL(file);
-      console.log('create', pictureUrl);
-      setPictureUrl(pictureUrl)
+
+      setPictureUrl(pictureUrl);
+    }
+  };
+
+  const handlePictureClick = async () => {
+    if (isPlatform('capacitor')) {
+      try {
+        const photo = await Camera.getPhoto({
+          resultType: CameraResultType.Uri,
+          source: CameraSource.Prompt,
+          width: 600,
+        });
+
+        setPictureUrl(photo.webPath);
+      } catch (error) {
+        console.log('handlePictureClick - error', error);
+      }
+    } else {
+      fileInputRef.current.click()
     }
   };
 
@@ -124,7 +140,7 @@ const AddEntryPage: React.FC = () => {
             <img
               src={pictureUrl}
               alt=""
-              onClick={() => fileInputRef.current.click()}
+              onClick={handlePictureClick}
               style={{ cursor: 'pointer' }}
             />
           </IonItem>
