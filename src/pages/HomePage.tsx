@@ -9,6 +9,7 @@ import {
   IonFab,
   IonFabButton,
   IonIcon,
+  IonLabel,
 } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
 
@@ -17,6 +18,7 @@ import { add as addIcon } from 'ionicons/icons';
 import { firestore } from '../firebase';
 import { Entry, toEntry } from '../models';
 import { useAuth } from '../auth';
+import { formatDate } from '../date';
 
 const HomePage: React.FC = () => {
   const { userId } = useAuth();
@@ -25,7 +27,8 @@ const HomePage: React.FC = () => {
   useEffect(() => {
     const entriesRef = firestore.collection('users').doc(userId).collection('entries');
 
-    return entriesRef.onSnapshot(({ docs }) => setEntries(docs.map(toEntry)));
+    return entriesRef.orderBy('date', 'desc').limit(7)
+      .onSnapshot(({ docs }) => setEntries(docs.map(toEntry)));
     // entriesRef.get().then(({ docs }) => setEntries(docs.map(toEntry)));
   }, [userId]);
 
@@ -44,7 +47,10 @@ const HomePage: React.FC = () => {
               key={entry.id}
               routerLink={`/my/entries/view/${entry.id}`}
             >
-              {entry.title}
+              <IonLabel>
+                {entry.date && <h2>{formatDate(entry.date)}</h2>}
+                <h3>{entry.title}</h3>
+              </IonLabel>
             </IonItem>
           )}
         </IonList>

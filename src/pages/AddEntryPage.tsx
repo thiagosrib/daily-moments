@@ -12,6 +12,7 @@ import {
   IonInput,
   IonTextarea,
   IonButton,
+  IonDatetime,
 } from '@ionic/react';
 import React, { useState } from 'react';
 
@@ -24,12 +25,15 @@ const AddEntryPage: React.FC = () => {
 
   const history = useHistory();
 
+  const [ date, setDate ] = useState('');
   const [ title, setTitle ] = useState('');
   const [ description, setDescription ] = useState('');
 
   const handleSave = async () => {
     const entriesRef = firestore.collection('users').doc(userId).collection('entries');
-    const entryData = { title, description };
+    // const dateJS = new Date(date);
+    // const timestamp = firestore.Timestamp.fromDate(dateJS);
+    const entryData = { date, title, description };
 
     await entriesRef.add(entryData);
     history.goBack();
@@ -47,6 +51,13 @@ const AddEntryPage: React.FC = () => {
       </IonHeader>
       <IonContent className='ion-padding'>
         <IonList>
+          <IonItem>
+            <IonLabel position='stacked'>Date</IonLabel>
+            <IonDatetime
+              value={date}
+              onIonChange={(event) => setDate(event.detail.value)}
+            />
+          </IonItem>
           <IonItem>
             <IonLabel position='stacked'>Title</IonLabel>
             <IonInput
