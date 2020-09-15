@@ -13,14 +13,13 @@ import RegisterPage from './pages/RegisterPage';
 const App: React.FC = () => {
   const { loading, auth } = useAuthInit();
 
-  console.log(`App.loggedIn loading: ${loading} auth: `, auth);
   if (loading) {
     return <IonLoading isOpen />;
   }
 
   return (
     <IonApp>
-      <AuthContext.Provider value={ auth }>
+      <AuthContext.Provider value={auth}>
         <IonReactRouter>
           <Switch>
             <Route exact path='/login'>

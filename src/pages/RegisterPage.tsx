@@ -28,8 +28,7 @@ const RegisterPage: React.FC = () => {
   const handleRegister = async () => {
     try {
       setStatus({ isLoading: true, isError: false, msg: '' });
-      const credential = await auth.createUserWithEmailAndPassword(email, password);
-      console.log('LoginPage.handleRegister.credential', credential);
+      await auth.createUserWithEmailAndPassword(email, password);
     } catch (err) {
       setStatus({ isLoading: false, isError: true, msg: err.message });
       console.log('LoginPage.handleRegister.error', err);

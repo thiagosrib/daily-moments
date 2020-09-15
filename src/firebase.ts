@@ -4,13 +4,14 @@ import 'firebase/firestore';
 import 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCpngPezt5czQefIwOTxkQLr_nMnLr04iU',
-  authDomain: 'daily-moments-6460a.firebaseapp.com',
-  databaseURL: 'https://daily-moments-6460a.firebaseio.com',
-  projectId: 'daily-moments-6460a',
-  storageBucket: 'daily-moments-6460a.appspot.com',
-  messagingSenderId: '52516407563',
-  appId: '1:52516407563:web:c26b812886f3f7bcbaba0e',
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DATABASE_URL,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 const app = firebase.initializeApp(firebaseConfig);
