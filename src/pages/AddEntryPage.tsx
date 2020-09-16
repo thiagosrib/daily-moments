@@ -43,6 +43,7 @@ const AddEntryPage: React.FC = () => {
 
   const fileInputRef = useRef<HTMLInputElement>();
 
+  const [ isLoading, setIsLoading ] = useState(false);
   const [ date, setDate ] = useState('');
   const [ title, setTitle ] = useState('');
   const [ description, setDescription ] = useState('');
@@ -55,6 +56,7 @@ const AddEntryPage: React.FC = () => {
   }, [pictureUrl]);
 
   const handleSave = async () => {
+    setIsLoading(true);
     const entriesRef = firestore.collection('users').doc(userId).collection('entries');
     // const dateJS = new Date(date);
     // const timestamp = firestore.Timestamp.fromDate(dateJS);
@@ -65,6 +67,7 @@ const AddEntryPage: React.FC = () => {
     }
 
     await entriesRef.add(entryData);
+    setIsLoading(false);
     history.goBack();
   }
 
@@ -145,7 +148,13 @@ const AddEntryPage: React.FC = () => {
             />
           </IonItem>
         </IonList>
-        <IonButton expand='block' onClick={handleSave}>Save</IonButton>
+        <IonButton
+          expand='block'
+          onClick={handleSave}
+          disabled={isLoading}
+        >
+          Save
+        </IonButton>
       </IonContent>
     </IonPage>
   );
