@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Daily Moments</string>
-    <string name="title_activity_main">Daily Moments</string>
-    <string name="package_name">br.com.example.dailymoments</string>
-    <string name="custom_url_scheme">br.com.example.dailymoments</string>
-</resources>
