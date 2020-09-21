@@ -4,6 +4,9 @@
 /node_modules
 /.pnp
 .pnp.js
+/android
+/ios
+/.gradle/*
 
 # testing
 /coverage
@@ -22,7 +25,6 @@
 .env.test.local
 .env.production
 .env.production.local
-.env.thiago
 .vscode
 
 npm-debug.log*
